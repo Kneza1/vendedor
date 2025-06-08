@@ -17,7 +17,7 @@ public class VendedorService {
     private VendedorRepository repository;
 
     public VendedorDTO guardar(VendedorDTO dto) {
-        Vendedor cliente = toEntity(dto);
+        Vendedor vendedor = toEntity(dto);
         Vendedor saved = repository.save(vendedor);
         return toDTO(saved);
     }

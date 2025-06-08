@@ -1,7 +1,7 @@
 package com.api.vendedor.controllers;
 
 import com.api.vendedor.dto.VendedorDTO;
-import com.api.vendedor.dto.VendedorService;
+import com.api.vendedor.services.VendedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
