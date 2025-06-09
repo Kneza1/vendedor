@@ -17,7 +17,7 @@ public class VendedorController {
 
     @PostMapping
     public ResponseEntity<VendedorDTO> crear(@RequestBody VendedorDTO dto) {
-        return ResponseEntity.ok(service.guardar(dto));
+        return ResponseEntity.ok(service.crear(dto));
     }
 
     @GetMapping
@@ -27,22 +27,18 @@ public class VendedorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<VendedorDTO> obtener(@PathVariable Integer id) {
-        return service.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VendedorDTO> actualizar(@PathVariable Integer id, @RequestBody VendedorDTO dto) {
-        return service.actualizar(id, dto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<VendedorDTO> actualizar(@PathVariable Integer id, @RequestBody VendedorDTO vendedorDTO) {
+        return ResponseEntity.ok(service.actualizar(id, vendedorDTO));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
-        return service.eliminar(id)
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.notFound().build();
+        service.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
+
 }
