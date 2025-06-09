@@ -9,15 +9,10 @@ import lombok.Data;
 public class Vendedor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer idVendedor;
-
-    private Integer idUsuario;
-
     private String nombreCompleto;
-
-    private String rut;
-
-    private String direccion;
-
-    private String telefono;
+    private int meta;
+    private String sucursalAsignada;
+    private boolean metaCumplida;
 }

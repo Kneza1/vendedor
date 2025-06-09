@@ -35,11 +35,7 @@ public class VendedorService {
 
     public Optional<VendedorDTO> actualizar(Integer id, VendedorDTO dto) {
         return repository.findById(id).map(vendedor -> {
-            vendedor.setIdUsuario(dto.getIdUsuario());
             vendedor.setNombreCompleto(dto.getNombreCompleto());
-            vendedor.setRut(dto.getRut());
-            vendedor.setDireccion(dto.getDireccion());
-            vendedor.setTelefono(dto.getTelefono());
             return toDTO(repository.save(vendedor));
         });
     }
@@ -56,22 +52,20 @@ public class VendedorService {
     private VendedorDTO toDTO(Vendedor vendedor) {
         VendedorDTO dto = new VendedorDTO();
         dto.setIdVendedor(vendedor.getIdVendedor());
-        dto.setIdUsuario(vendedor.getIdUsuario());
+        dto.setMetaCumplida(vendedor.getMetaCumplida());
         dto.setNombreCompleto(vendedor.getNombreCompleto());
-        dto.setRut(vendedor.getRut());
-        dto.setDireccion(vendedor.getDireccion());
-        dto.setTelefono(vendedor.getTelefono());
+        dto.setSucursalAsignada(vendedor.getSucursalAsignada());
+        dto.setMeta(vendedor.getMeta());
         return dto;
     }
 
     private Vendedor toEntity(VendedorDTO dto) {
         Vendedor vendedor = new Vendedor();
         vendedor.setIdVendedor(dto.getIdVendedor());
-        vendedor.setIdUsuario(dto.getIdUsuario());
+        vendedor.setMetaCumplida(dto.getMetaCumplida());
         vendedor.setNombreCompleto(dto.getNombreCompleto());
-        vendedor.setRut(dto.getRut());
-        vendedor.setDireccion(dto.getDireccion());
-        vendedor.setTelefono(dto.getTelefono());
+        vendedor.setsucursalasignada(dto.getsucursalAsignada());
+        vendedor.setMeta(dto.getMeta());
         return vendedor;
     }
 }
