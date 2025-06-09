@@ -6,7 +6,7 @@ import lombok.Data;
 public class VendedorDTO {
     private Integer idVendedor;
     private String nombreCompleto;
-    private int meta;
     private String sucursalAsignada;
+    private int meta;
     private boolean metaCumplida;
 }

@@ -16,10 +16,30 @@ public class VendedorService {
     @Autowired
     private VendedorRepository repository;
 
-    public VendedorDTO guardar(VendedorDTO dto) {
-        Vendedor vendedor = toEntity(dto);
-        Vendedor saved = repository.save(vendedor);
-        return toDTO(saved);
+    private VendedorDTO toDTO(Vendedor vendedor) {
+        VendedorDTO vendedorDTO = new VendedorDTO();
+        vendedorDTO.setIdVendedor(vendedor.getIdVendedor());
+        vendedorDTO.setNombreCompleto(vendedor.getNombreCompleto());
+        vendedorDTO.setSucursalAsignada(vendedor.getSucursalAsignada());
+        vendedorDTO.setMeta(vendedor.getMeta());
+        vendedorDTO.setMetaCumplida(vendedor.isMetaCumplida());
+        return vendedorDTO;
+    }
+
+    private Vendedor toEntity(VendedorDTO vendedorDTO) {
+        Vendedor vendedor = new Vendedor();
+        vendedor.setIdVendedor(vendedorDTO.getIdVendedor());
+        vendedor.setNombreCompleto(vendedorDTO.getNombreCompleto());
+        vendedor.setSucursalAsignada(vendedorDTO.getSucursalAsignada());
+        vendedor.setMeta(vendedorDTO.getMeta());
+        vendedor.setMetaCumplida(vendedorDTO.isMetaCumplida());
+        return vendedor;
+    }
+
+    public VendedorDTO crear(VendedorDTO vendedorDTO) {
+        Vendedor vendedor = toEntity(vendedorDTO);
+        Vendedor savedVendedor = repository.save(vendedor);
+        return toDTO(savedVendedor);
     }
 
     public List<VendedorDTO> listar() {
@@ -28,44 +48,25 @@ public class VendedorService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<VendedorDTO> obtenerPorId(Integer id) {
-        return repository.findById(id)
-                .map(this::toDTO);
+    public VendedorDTO buscarPorId(Integer id) {
+        Vendedor vendedor = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vendedor no encontrado con ID: " + id));
+        return toDTO(vendedor);
     }
 
-    public Optional<VendedorDTO> actualizar(Integer id, VendedorDTO dto) {
-        return repository.findById(id).map(vendedor -> {
-            vendedor.setNombreCompleto(dto.getNombreCompleto());
-            return toDTO(repository.save(vendedor));
-        });
+    public VendedorDTO actualizar(Integer id, VendedorDTO vendedorDTO) {
+        Vendedor vendedorExistente = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vendedor no encontrado con ID: " + id));
+
+        vendedorExistente.setNombreCompleto(vendedorDTO.getNombreCompleto());
+        vendedorExistente.setSucursalAsignada(vendedorDTO.getSucursalAsignada());
+        vendedorExistente.setMeta(vendedorDTO.getMeta());
+        vendedorExistente.setMetaCumplida(vendedorDTO.isMetaCumplida());
+
+        return toDTO(repository.save(vendedorExistente));
     }
 
-    public boolean eliminar(Integer id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
-    // Métodos auxiliares
-    private VendedorDTO toDTO(Vendedor vendedor) {
-        VendedorDTO dto = new VendedorDTO();
-        dto.setIdVendedor(vendedor.getIdVendedor());
-        dto.setMetaCumplida(vendedor.getMetaCumplida());
-        dto.setNombreCompleto(vendedor.getNombreCompleto());
-        dto.setSucursalAsignada(vendedor.getSucursalAsignada());
-        dto.setMeta(vendedor.getMeta());
-        return dto;
-    }
-
-    private Vendedor toEntity(VendedorDTO dto) {
-        Vendedor vendedor = new Vendedor();
-        vendedor.setIdVendedor(dto.getIdVendedor());
-        vendedor.setMetaCumplida(dto.getMetaCumplida());
-        vendedor.setNombreCompleto(dto.getNombreCompleto());
-        vendedor.setsucursalasignada(dto.getsucursalAsignada());
-        vendedor.setMeta(dto.getMeta());
-        return vendedor;
+    public void eliminar(Integer id) {
+        repository.deleteById(id);
     }
 }
